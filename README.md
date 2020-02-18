@@ -22,10 +22,10 @@ Add all your products to your `config.json` (in `$COMPOSER_HOME`) as packages.
       "token": "YOUR ENVATO PERSONAL TOKEN FROM https://build.envato.com/create-token",
       "packages": {
         "envato/avada-theme": {
-           "item-id": "2833226"
+          "item-id": 2833226
         },
         "envato/layerslider-plugin": {
-          "item-id": "1362246"
+          "item-id": 1362246
         }
       }
     }
@@ -39,3 +39,7 @@ Add all your products to your `config.json` (in `$COMPOSER_HOME`) as packages.
 
 Once the plugin is installed and configured,
 you can install any of the listed products as normal Composer packages.
+
+### 
+
+Basically copied from `naderman/composer-aws`

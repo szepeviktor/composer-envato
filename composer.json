@@ -1,0 +1,31 @@
+{
+    "name": "szepeviktor/composer-envato",
+    "type": "composer-plugin",
+    "description": "Envato plugin for Composer",
+    "keywords": [
+        "envato",
+        "themeforest",
+        "codecanyon",
+        "wordpress",
+        "composer",
+        "composer-plugin"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1",
+        "composer-plugin-api": "^1.1",
+        "composer/installers": "^1.8"
+    },
+    "require-dev": {
+        "composer/composer": "^1.0",
+        "phpstan/phpstan": "^0.12.0"
+    },
+    "extra": {
+        "class": "SzepeViktor\\Composer\\Envato\\EnvatoPlugin"
+    },
+    "autoload": {
+        "psr-4": {
+            "SzepeViktor\\Composer\\Envato\\": "src/"
+        }
+    }
+}
