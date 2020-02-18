@@ -1,6 +1,7 @@
 # Envato plugin for Composer
 
-A composer plugin to load WordPress [themes](https://themeforest.net/category/wordpress)
+A [Composer plugin](https://getcomposer.org/doc/articles/plugins.md)
+to load WordPress [themes](https://themeforest.net/category/wordpress)
 and [plugins](https://codecanyon.net/category/wordpress) from [Envato](https://envato.com/).
 
 ### Installation
