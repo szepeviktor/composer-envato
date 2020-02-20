@@ -5,20 +5,14 @@ declare(strict_types=1);
 namespace SzepeViktor\Composer\Envato;
 
 use Composer\Composer;
-use Composer\EventDispatcher\EventSubscriberInterface;
-use Composer\Installer\InstallerEvent;
-use Composer\Installer\InstallerEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
-use Composer\Plugin\PreFileDownloadEvent;
 use Composer\Repository\ArrayRepository;
-use Composer\Util\Filesystem;
-use Composer\Util\RemoteFilesystem;
 
 /**
- * Composer Plugin for Envato.
+ * Composer Plugin for Envato Marketplace.
  */
-class EnvatoPlugin implements PluginInterface, EventSubscriberInterface
+class EnvatoPlugin implements PluginInterface
 {
     /**
      * @var Composer
@@ -35,43 +29,42 @@ class EnvatoPlugin implements PluginInterface, EventSubscriberInterface
      */
     protected $config;
 
+    /**
+     * @var EnvatoApi
+     */
+    protected $api;
+
     public function activate(Composer $composer, IOInterface $io): void
     {
         $this->composer = $composer;
         $this->io = $io;
-        $this->config = new EnvatoConfig();
+        $composerConfig = $composer->getConfig();
+        $this->config = new EnvatoConfig($composerConfig);
+        if (! $this->config->isValid()) {
+            return;
+        }
+
+        $this->api = new EnvatoApi($io, $composerConfig, $this->config->getToken());
+        $rm = $composer->getRepositoryManager();
+        $rm->addRepository($this->generateRepository());
     }
 
-    /**
-     * Returns an array of event names this subscriber wants to listen to.
-     *
-     * An array of arrays composed of the method names to call and respective
-     * priorities, or 0 if unset
-     *
-     * @return array<string, array<int, array{0:string, 1:int}>> Event names to listen to
-     */
-    public static function getSubscribedEvents()
+    protected function generateRepository(): ArrayRepository
     {
-        return [
-            InstallerEvents::PRE_DEPENDENCIES_SOLVING => [
-                ['addEnvatoRepository', 0],
-            ]
-        ];
-    }
+        $api = $this->api;
 
-    public function addEnvatoRepository(InstallerEvent $event): void
-    {
-        $pool = $event->getPool();
-        $pool->addRepository($this->generateEnvatoRepository($this->config));
-    }
-
-    protected function generateEnvatoRepository(EnvatoConfig $config): ArrayRepository
-    {
         return new ArrayRepository(array_map(
-            static function ($package) {
-                return new EnvatoPackage($package['name']);
+            static function ($packageConfig) use ($api) {
+                $package = new EnvatoPackage(
+                    $packageConfig['name'],
+                    $packageConfig['itemId'],
+                    $packageConfig['type'],
+                    // TODO There is no DI container in Composer
+                    $api
+                );
+                return $package;
             },
-            $config->getPackages()
+            $this->config->getPackageList()
         ));
     }
 }
