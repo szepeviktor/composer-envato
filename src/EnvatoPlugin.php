@@ -53,7 +53,7 @@ class EnvatoPlugin implements PluginInterface
     {
         $api = $this->api;
 
-        return new ArrayRepository(array_map(
+        return new ArrayRepository(\array_map(
             static function ($packageConfig) use ($api) {
                 $package = new EnvatoPackage(
                     $packageConfig['name'],

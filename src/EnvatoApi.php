@@ -26,8 +26,8 @@ class EnvatoApi
 
     public function __construct(IOInterface $io, Config $config, string $token)
     {
-        $this->token = $token;
         $this->remoteFilesystem = Factory::createRemoteFilesystem($io, $config);
+        $this->token = $token;
     }
 
     public function getVersion(int $itemId): string

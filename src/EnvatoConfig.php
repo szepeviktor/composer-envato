@@ -18,7 +18,7 @@ class EnvatoConfig
     /**
      * @var bool
      */
-    protected $valid = false;
+    protected $valid;
 
     public function __construct(Config $composerConfig)
     {
