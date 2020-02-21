@@ -117,4 +117,12 @@ class EnvatoPackage extends Package
     {
         $this->distUrl = $url;
     }
+
+    /**
+     * @return bool
+     */
+    public function isAbandoned()
+    {
+        return false;
+    }
 }
