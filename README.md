@@ -1,5 +1,9 @@
 # Composer plugin for Envato
 
+[![Packagist](https://img.shields.io/packagist/v/szepeviktor/composer-envato.svg?color=239922&style=popout)](https://packagist.org/packages/szepeviktor/composer-envato)
+[![Packagist stats](https://img.shields.io/packagist/dt/szepeviktor/composer-envato.svg)](https://packagist.org/packages/szepeviktor/composer-envato/stats)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-239922)](https://github.com/phpstan/phpstan)
+
 A [Composer plugin](https://getcomposer.org/doc/articles/plugins.md)
 to load WordPress [themes](https://themeforest.net/category/wordpress)
 and [plugins](https://codecanyon.net/category/wordpress) from [Envato](https://envato.com/).
