@@ -11,7 +11,7 @@ class EnvatoConfig
     const ENVATO_CONFIG = 'envato';
 
     /**
-     * @var array
+     * @var array<mixed, mixed>
      */
     protected $config;
 
@@ -49,10 +49,7 @@ class EnvatoConfig
      */
     public function getPackageList(): array
     {
-        // FIXME
-        return [['name'=>'envato/avada-theme', 'itemId'=>2833226, 'type'=>'wordpress-theme']];
-
-        return $this->arrayMapAssociative(
+        return \array_map(
             static function ($name, $data) {
                 return [
                     'name' => $name,
@@ -60,16 +57,8 @@ class EnvatoConfig
                     'type' => $data['type'] ?? 'wordpress-theme',
                 ];
             },
+            \array_keys($this->config['packages']),
             $this->config['packages']
-        );
-    }
-
-    protected function arrayMapAssociative(callable $callback, array $array): array
-    {
-        return \array_column(
-            \array_map($callback, \array_keys($array), $array),
-            1,
-            null
         );
     }
 }

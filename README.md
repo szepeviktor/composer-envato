@@ -6,7 +6,7 @@ and [plugins](https://codecanyon.net/category/wordpress) from [Envato](https://e
 
 ### Installation
 
-Global...
+This Composer plugin must be installed globally as it adds a virtual package repository.
 
 ```shell
 composer global require --update-no-dev szepeviktor/composer-envato
@@ -51,11 +51,7 @@ you can simply install any of the listed products as Composer packages.
 1. In the `activate` method it creates an `ArrayRepository`
    with package data from `config.json`
 1. Package version is queried from Envato API
-1. When installing a package the URL is also queried from Envato API
+1. When installing a package its URL is also queried from Envato API
 
-- Pretty package version e.g. `v1.2`
-- Normalized package version e.g. `1.2.0.0`
-
-### 
-
-Basically copied from `naderman/composer-aws`
+- Pretty package version is e.g. `v1.2`
+- Normalized package version is e.g. `1.2.0.0`
