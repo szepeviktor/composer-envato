@@ -11,8 +11,8 @@ use Composer\Util\RemoteFilesystem;
 
 class EnvatoApi
 {
-    const API_DOMAIN = 'api.envato.com';
-    const API_BASE_URL = 'https://api.envato.com/v3';
+    public const API_DOMAIN = 'api.envato.com';
+    public const API_BASE_URL = 'https://api.envato.com/v3';
 
     /**
      * @var string

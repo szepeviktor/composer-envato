@@ -8,7 +8,7 @@ use Composer\Config;
 
 class EnvatoConfig
 {
-    const ENVATO_CONFIG = 'envato';
+    public const ENVATO_CONFIG = 'envato';
 
     /**
      * @var array<mixed, mixed>
