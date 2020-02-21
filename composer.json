@@ -1,7 +1,7 @@
 {
     "name": "szepeviktor/composer-envato",
     "type": "composer-plugin",
-    "description": "Envato plugin for Composer",
+    "description": "Composer plugin for Envato",
     "keywords": [
         "envato",
         "themeforest",
@@ -14,11 +14,12 @@
     "require": {
         "php": ">=7.1",
         "composer-plugin-api": "^1.1",
-        "composer/installers": "^1.8"
+        "composer/installers": "^1.8",
+        "envato/avada-theme": "^6.2"
     },
     "require-dev": {
-        "composer/composer": "^1.0",
-        "phpstan/phpstan": "^0.12.0"
+        "composer/composer": "^1.8",
+        "phpstan/phpstan": "^0.12"
     },
     "extra": {
         "class": "SzepeViktor\\Composer\\Envato\\EnvatoPlugin"

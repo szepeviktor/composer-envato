@@ -1,4 +1,4 @@
-# Envato plugin for Composer
+# Composer plugin for Envato
 
 A [Composer plugin](https://getcomposer.org/doc/articles/plugins.md)
 to load WordPress [themes](https://themeforest.net/category/wordpress)
