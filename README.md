@@ -8,6 +8,9 @@ A [Composer plugin](https://getcomposer.org/doc/articles/plugins.md)
 to load WordPress [themes](https://themeforest.net/category/wordpress)
 and [plugins](https://codecanyon.net/category/wordpress) from [Envato](https://envato.com/).
 
+:bulb: Always the latest version is installed, as Envato does not make other versions available.
+Package version locking can only be achieved by local persistent cache, not across hosts or users.
+
 ### Installation
 
 This Composer plugin must be installed globally as it adds a virtual package repository.
