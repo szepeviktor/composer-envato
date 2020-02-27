@@ -14,8 +14,7 @@
     "require": {
         "php": ">=7.1",
         "composer-plugin-api": "^1.1",
-        "composer/installers": "^1.8",
-        "envato/avada-theme": "^6.2"
+        "composer/installers": "^1.8"
     },
     "require-dev": {
         "composer/composer": "^1.8",
