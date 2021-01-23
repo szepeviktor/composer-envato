@@ -34,7 +34,7 @@ class EnvatoApi
     {
         $response = $this->httpDownloader->get(
             self::API_BASE_URL . '/market/catalog/item-version?' . \http_build_query(['id' => $itemId]),
-            ['header' => ['Authorization: Bearer ' . $this->token]]
+            ['http' => ['header' => ['Authorization: Bearer ' . $this->token]]]
         );
 
         // TODO HTTP 429 response. Included in this response is a HTTP header Retry-After
@@ -57,7 +57,7 @@ class EnvatoApi
     {
         $response = $this->httpDownloader->get(
             self::API_BASE_URL . '/market/buyer/download?' . \http_build_query(['item_id' => $itemId]),
-            ['header' => ['Authorization: Bearer ' . $this->token]]
+            ['http' => ['header' => ['Authorization: Bearer ' . $this->token]]]
         );
 
         // TODO HTTP 429 response. Included in this response is a HTTP header Retry-After
