@@ -7,7 +7,7 @@ namespace SzepeViktor\Composer\Envato;
 use Composer\Config;
 use Composer\Factory;
 use Composer\IO\IOInterface;
-use Composer\Util\RemoteFilesystem;
+use Composer\Util\HttpDownloader;
 
 class EnvatoApi
 {
@@ -20,28 +20,26 @@ class EnvatoApi
     protected $token;
 
     /**
-     * @var RemoteFilesystem
+     * @var HttpDownloader
      */
-    protected $remoteFilesystem;
+    protected $httpDownloader;
 
     public function __construct(IOInterface $io, Config $config, string $token)
     {
-        $this->remoteFilesystem = Factory::createRemoteFilesystem($io, $config);
+        $this->httpDownloader = Factory::createHttpDownloader($io, $config);
         $this->token = $token;
     }
 
     public function getVersion(int $itemId): string
     {
-        $responseBody = $this->remoteFilesystem->getContents(
-            self::API_DOMAIN,
+        $response = $this->httpDownloader->get(
             self::API_BASE_URL . '/market/catalog/item-version?' . \http_build_query(['id' => $itemId]),
-            false,
-            ['http' => ['header' => ['Authorization: Bearer ' . $this->token]]]
+            ['header' => ['Authorization: Bearer ' . $this->token]]
         );
 
         // TODO HTTP 429 response. Included in this response is a HTTP header Retry-After
-        if ($this->remoteFilesystem->findStatusCode($this->remoteFilesystem->getLastHeaders()) === 200) {
-            $versionData = \json_decode($responseBody, true);
+        if ($response->getStatusCode() === 200) {
+            $versionData = \json_decode($response->getBody(), true);
             // TODO Check JSON
             if (\array_key_exists('wordpress_theme_latest_version', $versionData)) {
                 return $versionData['wordpress_theme_latest_version'];
@@ -57,16 +55,14 @@ class EnvatoApi
 
     public function getDownloadUrl(int $itemId): string
     {
-        $responseBody = $this->remoteFilesystem->getContents(
-            self::API_DOMAIN,
+        $response = $this->httpDownloader->get(
             self::API_BASE_URL . '/market/buyer/download?' . \http_build_query(['item_id' => $itemId]),
-            false,
-            ['http' => ['header' => ['Authorization: Bearer ' . $this->token]]]
+            ['header' => ['Authorization: Bearer ' . $this->token]]
         );
 
         // TODO HTTP 429 response. Included in this response is a HTTP header Retry-After
-        if ($this->remoteFilesystem->findStatusCode($this->remoteFilesystem->getLastHeaders()) === 200) {
-            $urlData = \json_decode($responseBody, true);
+        if ($response->getStatusCode() === 200) {
+            $urlData = \json_decode($response->getBody(), true);
             // TODO Check JSON
             if (\array_key_exists('wordpress_theme', $urlData)) {
                 return $urlData['wordpress_theme'];

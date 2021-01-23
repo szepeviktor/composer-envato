@@ -2,13 +2,3 @@ parameters:
     level: max
     paths:
         - src/
-    ignoreErrors:
-        -
-            message: "#^Parameter \\#1 \\$json of function json_decode expects string, bool\\|string given\\.$#"
-            count: 2
-            path: src/EnvatoApi.php
-
-        -
-            message: "#^Method SzepeViktor\\\\Composer\\\\Envato\\\\EnvatoConfig\\:\\:getPackageList\\(\\) should return array\\<int, array\\<string, int\\|string\\>\\> but returns array\\<int, mixed\\>\\.$#"
-            count: 1
-            path: src/EnvatoConfig.php

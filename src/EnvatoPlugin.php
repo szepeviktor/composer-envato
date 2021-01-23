@@ -49,6 +49,20 @@ class EnvatoPlugin implements PluginInterface
         $rm->addRepository($this->generateRepository());
     }
 
+    /**
+     * @return void
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+    }
+
+    /**
+     * @return void
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+    }
+
     protected function generateRepository(): ArrayRepository
     {
         $api = $this->api;
