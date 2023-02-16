@@ -10,11 +10,6 @@ use Composer\Package\Version\VersionParser;
 class EnvatoPackage extends Package
 {
     /**
-     * @var string
-     */
-    protected $type;
-
-    /**
      * @var int
      */
     protected $itemId;
@@ -37,14 +32,6 @@ class EnvatoPackage extends Package
     public function isDev(): bool
     {
         return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getType(): string
-    {
-        return $this->type;
     }
 
     /**
@@ -92,30 +79,23 @@ class EnvatoPackage extends Package
     /**
      * {@inheritDoc}
      */
-    public function getSourceUrl(): string
+    public function getSourceUrl(): ?string
     {
-        return '';
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDistUrl(): string
+    public function getDistUrl(): ?string
     {
         if ($this->distUrl !== null) {
             return $this->distUrl;
         }
+
         $this->distUrl = $this->api->getDownloadUrl($this->itemId);
 
         return $this->distUrl;
-    }
-
-    /**
-     * @param string $url
-     */
-    public function setDistUrl($url): void
-    {
-        $this->distUrl = $url;
     }
 
     /**

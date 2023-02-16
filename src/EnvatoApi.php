@@ -53,7 +53,10 @@ class EnvatoApi
         return '0.0.0';
     }
 
-    public function getDownloadUrl(int $itemId): string
+    /**
+     * @return non-empty-string|null
+     */
+    public function getDownloadUrl(int $itemId): ?string
     {
         $response = $this->httpDownloader->get(
             self::API_BASE_URL . '/market/buyer/download?' . \http_build_query(['item_id' => $itemId]),
@@ -73,6 +76,6 @@ class EnvatoApi
         }
 
         // In any other case
-        return '';
+        return null;
     }
 }

@@ -11,7 +11,7 @@ class EnvatoConfig
     public const ENVATO_CONFIG = 'envato';
 
     /**
-     * @var array<mixed, mixed>
+     * @var array<mixed>
      */
     protected $config;
 
@@ -22,12 +22,14 @@ class EnvatoConfig
 
     public function __construct(Config $composerConfig)
     {
-        $this->config = $composerConfig->get(self::ENVATO_CONFIG);
+        $envatoConfig = $composerConfig->get(self::ENVATO_CONFIG);
+        $this->config = \is_array($envatoConfig) ? $envatoConfig : [];
 
-        $this->valid = $this->config !== null
-            && \array_key_exists('token', $this->config)
+        $this->valid = \array_key_exists('token', $this->config)
+            && \is_string($this->config['token'])
             && $this->config['token'] !== ''
             && \array_key_exists('packages', $this->config)
+            && \is_array($this->config['packages'])
             && $this->config['packages'] !== []
         ;
     }
@@ -52,8 +54,8 @@ class EnvatoConfig
         return \array_map(
             static function ($name, $data) {
                 return [
-                    'name' => $name,
-                    'itemId' => $data['item-id'],
+                    'name' => (string)$name,
+                    'itemId' => $data['item-id'] ?? 0,
                     'type' => $data['type'] ?? 'wordpress-theme',
                 ];
             },
