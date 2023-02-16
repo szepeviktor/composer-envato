@@ -21,9 +21,9 @@ composer global require --update-no-dev szepeviktor/composer-envato
 
 ### Configuration
 
-Add all your products to your `config.json` (in `$COMPOSER_HOME`) as packages.
+Add all your Envato products to your `config.json` (located in `$COMPOSER_HOME`) as "packages".
 
-You find the `item-id` at the end of product URL-s.
+You find `item-id` at the end of product URL-s.  
 e.g. `https://themeforest.net/item/avada-responsive-multipurpose-theme/2833226`
 
 ```json
