@@ -17,8 +17,8 @@
         "composer/installers": "^1.10"
     },
     "require-dev": {
-        "composer/composer": "^2.0.8",
-        "phpstan/phpstan": "^0.12"
+        "composer/composer": "^2.3.0",
+        "phpstan/phpstan": "^1.9"
     },
     "suggest": {
         "szepeviktor/composer-theme-fusion": "Composer plugin for ThemeFusion"
@@ -34,5 +34,10 @@
     "scripts": {
         "lint": "find src/ -type f -name '*.php' -print0|xargs -0 -L1 -P4 -- php -l -f",
         "analyze": "phpstan analyze"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }

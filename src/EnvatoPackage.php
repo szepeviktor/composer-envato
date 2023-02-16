@@ -50,7 +50,7 @@ class EnvatoPackage extends Package
     /**
      * {@inheritDoc}
      */
-    public function getDistType()
+    public function getDistType(): string
     {
         return 'zip';
     }
@@ -58,7 +58,7 @@ class EnvatoPackage extends Package
     /**
      * {@inheritDoc}
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         if ($this->version !== '0.0.0.0') {
             return $this->version;
@@ -75,7 +75,7 @@ class EnvatoPackage extends Package
     /**
      * {@inheritDoc}
      */
-    public function getPrettyVersion()
+    public function getPrettyVersion(): string
     {
         if ($this->prettyVersion !== '0.0.0') {
             return $this->prettyVersion;
