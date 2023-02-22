@@ -48,7 +48,8 @@ e.g. `https://themeforest.net/item/avada-responsive-multipurpose-theme/2833226`
 
 :bulb: Please use the vendor name `envato` for consistency.
 
-The personal token can also be read from an environment variable:
+The personal token can also be read from an environment variable or a `.env` file.
+Create a `.env` file, where the `composer.json` file lives, and add the following:
 
 ```
 ENVATO_TOKEN="<YOUR ENVATO PERSONAL TOKEN FROM https://build.envato.com/create-token>"

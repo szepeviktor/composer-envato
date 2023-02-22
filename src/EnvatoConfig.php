@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SzepeViktor\Composer\Envato;
 
 use Composer\Config;
+use Dotenv\Dotenv;
 
 class EnvatoConfig
 {
@@ -27,6 +28,7 @@ class EnvatoConfig
         $envatoConfig = $composerConfig->get(self::ENVATO_CONFIG);
         $this->config = \is_array($envatoConfig) ? $envatoConfig : [];
 
+        $this->loadDotenv();
         $this->mergeEnvConfig();
 
         $this->valid = \array_key_exists('token', $this->config)
@@ -66,6 +68,14 @@ class EnvatoConfig
             \array_keys($this->config['packages']),
             $this->config['packages']
         );
+    }
+
+    protected function loadDotenv(): void
+    {
+        $cwd = \getcwd();
+        if ($cwd && \file_exists($cwd . DIRECTORY_SEPARATOR . '.env')) {
+            Dotenv::createImmutable($cwd)->safeLoad();
+        }
     }
 
     protected function mergeEnvConfig(): void
