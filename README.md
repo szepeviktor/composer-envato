@@ -48,6 +48,12 @@ e.g. `https://themeforest.net/item/avada-responsive-multipurpose-theme/2833226`
 
 :bulb: Please use the vendor name `envato` for consistency.
 
+The personal token can also be read from an environment variable:
+
+```
+ENVATO_TOKEN="<YOUR ENVATO PERSONAL TOKEN FROM https://build.envato.com/create-token>"
+```
+
 ### Usage
 
 Once the plugin is installed and configured,

@@ -10,6 +10,8 @@ class EnvatoConfig
 {
     public const ENVATO_CONFIG = 'envato';
 
+    public const ENV_VAR_TOKEN = 'ENVATO_TOKEN';
+
     /**
      * @var array<mixed>
      */
@@ -24,6 +26,8 @@ class EnvatoConfig
     {
         $envatoConfig = $composerConfig->get(self::ENVATO_CONFIG);
         $this->config = \is_array($envatoConfig) ? $envatoConfig : [];
+
+        $this->mergeEnvConfig();
 
         $this->valid = \array_key_exists('token', $this->config)
             && \is_string($this->config['token'])
@@ -62,5 +66,12 @@ class EnvatoConfig
             \array_keys($this->config['packages']),
             $this->config['packages']
         );
+    }
+
+    protected function mergeEnvConfig(): void
+    {
+        if (\array_key_exists(self::ENV_VAR_TOKEN, $_ENV)) {
+            $this->config['token'] = $_ENV[self::ENV_VAR_TOKEN];
+        }
     }
 }
