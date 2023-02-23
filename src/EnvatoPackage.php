@@ -51,10 +51,7 @@ class EnvatoPackage extends Package
             return $this->version;
         }
 
-        // Query Envato API
-        $this->prettyVersion = $this->api->getVersion($this->itemId);
-        $versionParser = new VersionParser();
-        $this->version = $versionParser->normalize($this->prettyVersion);
+        $this->processItemVersion();
 
         return $this->version;
     }
@@ -68,10 +65,7 @@ class EnvatoPackage extends Package
             return $this->prettyVersion;
         }
 
-        // Query Envato API
-        $this->prettyVersion = $this->api->getVersion($this->itemId);
-        $versionParser = new VersionParser();
-        $this->version = $versionParser->normalize($this->prettyVersion);
+        $this->processItemVersion();
 
         return $this->prettyVersion;
     }
@@ -104,5 +98,13 @@ class EnvatoPackage extends Package
     public function isAbandoned()
     {
         return false;
+    }
+
+    protected function processItemVersion(): void
+    {
+        // Query Envato API
+        $this->prettyVersion = $this->api->getVersion($this->itemId);
+        $versionParser = new VersionParser();
+        $this->version = $versionParser->normalize($this->prettyVersion);
     }
 }
