@@ -57,12 +57,38 @@ class EnvatoApi
     }
 
     /**
+     * Uses the API request URL to retrieve th download URL
+     * as the package's dist URL to serve as its cache key.
+     *
+     * @return non-empty-string
+     */
+    public function getDownloadRequestUrl(int $itemId, ?string $version = null): string
+    {
+        $query = ['item_id' => $itemId];
+
+        if ($version !== null) {
+            $query['version'] = $version;
+        }
+
+        return self::API_BASE_URL . '/market/buyer/download?' . \http_build_query($query);
+    }
+
+    /**
+     * @param  int|string $itemIdOrApiUrl
      * @return non-empty-string|null
      */
-    public function getDownloadUrl(int $itemId): ?string
+    public function getDownloadUrl($itemIdOrApiUrl): ?string
     {
+        if (\is_int($itemIdOrApiUrl) && $itemIdOrApiUrl > 0) {
+            $apiUrl = $this->getDownloadRequestUrl($itemIdOrApiUrl);
+        } elseif (\is_string($itemIdOrApiUrl) && $itemIdOrApiUrl !== '') {
+            $apiUrl = $itemIdOrApiUrl;
+        } else {
+            return null;
+        }
+
         $response = $this->httpDownloader->get(
-            self::API_BASE_URL . '/market/buyer/download?' . \http_build_query(['item_id' => $itemId]),
+            $apiUrl,
             ['http' => ['header' => ['Authorization: Bearer ' . $this->token]]]
         );
 

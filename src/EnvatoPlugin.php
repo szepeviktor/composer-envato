@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace SzepeViktor\Composer\Envato;
 
 use Composer\Composer;
+use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
+use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PluginInterface;
+use Composer\Plugin\PreFileDownloadEvent;
 use Composer\Repository\ArrayRepository;
 
 /**
  * Composer Plugin for Envato Marketplace.
  */
-class EnvatoPlugin implements PluginInterface
+class EnvatoPlugin implements PluginInterface, EventSubscriberInterface
 {
     /**
      * @var Composer
@@ -63,6 +66,16 @@ class EnvatoPlugin implements PluginInterface
     {
     }
 
+    /**
+     * @return array<key-of<PluginEvents::*>, (string|array{string, int})>
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            PluginEvents::PRE_FILE_DOWNLOAD => [ 'handlePreDownloadEvent', -1 ],
+        ];
+    }
+
     protected function generateRepository(): ArrayRepository
     {
         $api = $this->api;
@@ -80,5 +93,33 @@ class EnvatoPlugin implements PluginInterface
             },
             $this->config->getPackageList()
         ));
+    }
+
+    /**
+     * Resolve the download URL before downloading the package.
+     */
+    public function handlePreDownloadEvent(PreFileDownloadEvent $event): void
+    {
+        /**
+         * Bail early if this event is not for a package.
+         *
+         * @see https://github.com/composer/composer/pull/8975
+         */
+        if ($event->getType() !== 'package') {
+            return;
+        }
+
+        $processedUrl = $event->getProcessedUrl();
+        $downloadUrl  = $this->api->getDownloadUrl($processedUrl);
+
+        // Submit changes to Composer, if any
+        if (
+            \is_string($downloadUrl) &&
+            $downloadUrl !== '' &&
+            $downloadUrl !== $processedUrl
+        ) {
+            $event->setProcessedUrl($downloadUrl);
+            $event->setCustomCacheKey($processedUrl);
+        }
     }
 }

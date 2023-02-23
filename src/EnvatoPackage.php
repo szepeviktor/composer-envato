@@ -87,7 +87,7 @@ class EnvatoPackage extends Package
             return $this->distUrl;
         }
 
-        $this->distUrl = $this->api->getDownloadUrl($this->itemId);
+        $this->distUrl = $this->api->getDownloadRequestUrl($this->itemId, $this->getPrettyVersion());
 
         return $this->distUrl;
     }
