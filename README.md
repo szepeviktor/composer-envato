@@ -13,17 +13,26 @@ Package version locking can only be achieved by local persistent cache, not acro
 
 ### Installation
 
-This Composer plugin must be installed globally as it adds a virtual package repository.
+This Composer plugin adds a virtual package repository.
+
+It is recommended to install it globally:
 
 ```shell
 composer global require --update-no-dev szepeviktor/composer-envato
 ```
 
+It can also be installed per-project:
+
+```shell
+composer require --update-no-dev szepeviktor/composer-envato
+```
+
 ### Configuration
 
-Add all your Envato products to your `config.json` (located in `$COMPOSER_HOME`) as "packages".
+Add all your Envato products as "packages" in either the local `composer.json`
+file or the global `config.json` file (located in `$COMPOSER_HOME`).
 
-You find `item-id` at the end of product URL-s.  
+You can find the `item-id` at the end of product URL-s.
 e.g. `https://themeforest.net/item/avada-responsive-multipurpose-theme/2833226`
 
 ```json
@@ -51,7 +60,7 @@ e.g. `https://themeforest.net/item/avada-responsive-multipurpose-theme/2833226`
 The personal token can also be read from an environment variable or a `.env` file.
 Create a `.env` file, where the `composer.json` file lives, and add the following:
 
-```
+```ini
 ENVATO_TOKEN="<YOUR ENVATO PERSONAL TOKEN FROM https://build.envato.com/create-token>"
 ```
 
