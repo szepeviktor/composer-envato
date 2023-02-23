@@ -41,11 +41,14 @@ class EnvatoApi
         if ($response->getStatusCode() === 200) {
             $versionData = \json_decode($response->getBody() ?? '', true);
             // TODO Check JSON
-            if (is_array($versionData) && \array_key_exists('wordpress_theme_latest_version', $versionData)) {
-                return $versionData['wordpress_theme_latest_version'];
-            }
-            if (is_array($versionData) && \array_key_exists('wordpress_plugin_latest_version', $versionData)) {
-                return $versionData['wordpress_plugin_latest_version'];
+            if (\is_array($versionData)) {
+                if (\array_key_exists('wordpress_theme_latest_version', $versionData)) {
+                    return $versionData['wordpress_theme_latest_version'];
+                }
+
+                if (\array_key_exists('wordpress_plugin_latest_version', $versionData)) {
+                    return $versionData['wordpress_plugin_latest_version'];
+                }
             }
         }
 
@@ -67,11 +70,14 @@ class EnvatoApi
         if ($response->getStatusCode() === 200) {
             $urlData = \json_decode($response->getBody() ?? '', true);
             // TODO Check JSON
-            if (is_array($urlData) && \array_key_exists('wordpress_theme', $urlData)) {
-                return $urlData['wordpress_theme'];
-            }
-            if (is_array($urlData) && \array_key_exists('wordpress_plugin', $urlData)) {
-                return $urlData['wordpress_plugin'];
+            if (\is_array($urlData)) {
+                if (\array_key_exists('wordpress_theme', $urlData)) {
+                    return $urlData['wordpress_theme'];
+                }
+
+                if (\array_key_exists('wordpress_plugin', $urlData)) {
+                    return $urlData['wordpress_plugin'];
+                }
             }
         }
 
