@@ -73,7 +73,7 @@ class EnvatoConfig
     protected function loadDotenv(): void
     {
         $cwd = \getcwd();
-        if ($cwd && \file_exists($cwd . DIRECTORY_SEPARATOR . '.env')) {
+        if (\is_string($cwd) && \file_exists($cwd . DIRECTORY_SEPARATOR . '.env')) {
             Dotenv::createImmutable($cwd)->safeLoad();
         }
     }
