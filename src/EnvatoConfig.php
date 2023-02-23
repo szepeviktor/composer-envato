@@ -14,7 +14,7 @@ class EnvatoConfig
     public const ENV_VAR_TOKEN = 'ENVATO_TOKEN';
 
     /**
-     * @var array<mixed>
+     * @var array{token?:string, packages?:array{item-id:?(int|string), type:?string}}
      */
     protected $config;
 
@@ -40,6 +40,9 @@ class EnvatoConfig
         ;
     }
 
+    /**
+     * @phpstan-assert-if-true !array{} $this->config
+     */
     public function isValid(): bool
     {
         return $this->valid;
@@ -60,9 +63,9 @@ class EnvatoConfig
         return \array_map(
             static function ($name, $data) {
                 return [
-                    'name' => (string)$name,
-                    'itemId' => $data['item-id'] ?? 0,
-                    'type' => $data['type'] ?? 'wordpress-theme',
+                    'name'   => (string)$name,
+                    'itemId' => (int)($data['item-id'] ?? 0),
+                    'type'   => (string)($data['type'] ?? 'wordpress-theme'),
                 ];
             },
             \array_keys($this->config['packages']),
