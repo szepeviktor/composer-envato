@@ -96,7 +96,8 @@ class EnvatoPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Resolve the download URL before downloading the package.
+     * Retrieve the item's download URL from the Envato API
+     * and use the item's dist URL as the cache key.
      */
     public function handlePreDownloadEvent(PreFileDownloadEvent $event): void
     {

@@ -14,7 +14,7 @@ class EnvatoConfig
     public const ENV_VAR_TOKEN = 'ENVATO_TOKEN';
 
     /**
-     * @var array{token?:string, packages?:array{item-id:?(int|string), type:?string}}
+     * @var array{token?:string, packages?:array{item-id:int|string|null, type:string|null}}
      */
     protected $config;
 

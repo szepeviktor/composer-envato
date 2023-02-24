@@ -30,6 +30,11 @@ class EnvatoApi
         $this->token = $token;
     }
 
+    /**
+     * Query the Envato API for the item's current version.
+     *
+     * @return non-empty-string
+     */
     public function getVersion(int $itemId): string
     {
         $response = $this->httpDownloader->get(
@@ -57,9 +62,11 @@ class EnvatoApi
     }
 
     /**
-     * Uses the API request URL to retrieve th download URL
-     * as the package's dist URL to serve as its cache key.
+     * Return the Envato API URL to retrieve the item's download URL.
      *
+     * @param  int         $itemId  The item ID to lookup.
+     * @param  string|null $version Optional version to append to the URL.
+     *     This is used to by the plugin for the download's cache key in Composer.
      * @return non-empty-string
      */
     public function getDownloadRequestUrl(int $itemId, ?string $version = null): string
@@ -74,7 +81,9 @@ class EnvatoApi
     }
 
     /**
-     * @param  int|string $itemIdOrApiUrl
+     * Query the Envato API to retrieve the item's download URL.
+     *
+     * @param  int|string $itemIdOrApiUrl The item ID to lookup or the API URL to query.
      * @return non-empty-string|null
      */
     public function getDownloadUrl($itemIdOrApiUrl): ?string

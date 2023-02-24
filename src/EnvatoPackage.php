@@ -87,6 +87,10 @@ class EnvatoPackage extends Package
             return $this->distUrl;
         }
 
+        /**
+         * Use the Envato API URL to retrieve the item's download URL
+         * as the package's dist URL to serve as its cache key.
+         */
         $this->distUrl = $this->api->getDownloadRequestUrl($this->itemId, $this->getPrettyVersion());
 
         return $this->distUrl;
@@ -100,6 +104,9 @@ class EnvatoPackage extends Package
         return false;
     }
 
+    /**
+     * Retrieve the item's version from the Envato API.
+     */
     protected function processItemVersion(): void
     {
         // Query Envato API
