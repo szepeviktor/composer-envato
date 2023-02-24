@@ -88,9 +88,15 @@ class EnvatoApi
      */
     public function getDownloadUrl($itemIdOrApiUrl): ?string
     {
-        if (\is_int($itemIdOrApiUrl) && $itemIdOrApiUrl > 0) {
+        if (
+            \is_int($itemIdOrApiUrl) &&
+            $itemIdOrApiUrl > 0
+        ) {
             $apiUrl = $this->getDownloadRequestUrl($itemIdOrApiUrl);
-        } elseif (\is_string($itemIdOrApiUrl) && $itemIdOrApiUrl !== '') {
+        } elseif (
+            \is_string($itemIdOrApiUrl) &&
+            \strpos($itemIdOrApiUrl, self::API_BASE_URL . '/market/buyer/download') !== false
+        ) {
             $apiUrl = $itemIdOrApiUrl;
         } else {
             return null;
