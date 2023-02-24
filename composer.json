@@ -25,7 +25,8 @@
         "szepeviktor/composer-theme-fusion": "Composer plugin for ThemeFusion"
     },
     "extra": {
-        "class": "SzepeViktor\\Composer\\Envato\\EnvatoPlugin"
+        "class": "SzepeViktor\\Composer\\Envato\\EnvatoPlugin",
+        "plugin-modifies-downloads": true
     },
     "autoload": {
         "psr-4": {
