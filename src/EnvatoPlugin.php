@@ -71,10 +71,6 @@ class EnvatoPlugin implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        if (! $this->config->isValid()) {
-            return [];
-        }
-
         return [
             PluginEvents::PRE_FILE_DOWNLOAD => [ 'handlePreDownloadEvent', -1 ],
         ];
@@ -105,12 +101,7 @@ class EnvatoPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function handlePreDownloadEvent(PreFileDownloadEvent $event): void
     {
-        /**
-         * Bail early if this event is not for a package.
-         *
-         * @see https://github.com/composer/composer/pull/8975
-         */
-        if ($event->getType() !== 'package') {
+        if (! $this->config->isValid() || $event->getType() !== 'package') {
             return;
         }
 
