@@ -71,6 +71,10 @@ class EnvatoPlugin implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
+        if (! $this->config->isValid()) {
+            return [];
+        }
+
         return [
             PluginEvents::PRE_FILE_DOWNLOAD => [ 'handlePreDownloadEvent', -1 ],
         ];
