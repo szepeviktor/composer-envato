@@ -33,8 +33,8 @@
         }
     },
     "scripts": {
-        "lint": "find src/ -type f -name '*.php' -print0|xargs -0 -L1 -P4 -- php -l -f",
-        "analyze": "phpstan analyze"
+        "syntaxerror": "find src/ -type f -name '*.php' -print0|xargs -0 -L1 -- php -l -f",
+        "analyze": "phpstan"
     },
     "config": {
         "allow-plugins": {

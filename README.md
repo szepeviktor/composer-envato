@@ -11,7 +11,7 @@ and [plugins](https://codecanyon.net/category/wordpress) from [Envato](https://e
 :bulb: Always the latest version is installed, as Envato does not make other versions available.
 Package version locking can only be achieved by local persistent cache, not across hosts or users.
 
-### Installation
+## Installation
 
 This Composer plugin adds a virtual package repository.
 
@@ -27,7 +27,7 @@ It can also be installed per-project:
 composer require --update-no-dev szepeviktor/composer-envato
 ```
 
-### Configuration
+## Configuration
 
 Add all your Envato products as "packages" in either the local `composer.json`
 file or the global `config.json` file (located in `$COMPOSER_HOME`).
@@ -37,21 +37,21 @@ e.g. `https://themeforest.net/item/avada-responsive-multipurpose-theme/2833226`
 
 ```json
 {
-  "config": {
-    "envato": {
-      "token": "YOUR ENVATO PERSONAL TOKEN FROM https://build.envato.com/create-token",
-      "packages": {
-        "envato/avada-theme": {
-          "item-id": 2833226,
-          "type": "wordpress-theme"
-        },
-        "envato/layerslider-plugin": {
-          "item-id": 1362246,
-          "type": "wordpress-plugin"
+    "config": {
+        "envato": {
+            "token": "YOUR ENVATO PERSONAL TOKEN FROM https://build.envato.com/create-token",
+            "packages": {
+                "envato/avada-theme": {
+                    "item-id": 2833226,
+                    "type": "wordpress-theme"
+                },
+                "envato/layerslider-plugin": {
+                    "item-id": 1362246,
+                    "type": "wordpress-plugin"
+                }
+            }
         }
-      }
     }
-  }
 }
 ```
 
@@ -64,14 +64,14 @@ Create a `.env` file, where the `composer.json` file lives, and add the followin
 ENVATO_TOKEN="<YOUR ENVATO PERSONAL TOKEN FROM https://build.envato.com/create-token>"
 ```
 
-### Usage
+## Usage
 
 Once the plugin is installed and configured,
 you can simply install any of the listed products as Composer packages.
 
 :bulb: Envato API has [dynamic rate limiting](https://build.envato.com/api/#rate-limit)
 
-### Behind the scenes
+## Behind the scenes
 
 1. This package is a Composer plugin
 1. In the `activate` method it creates an `ArrayRepository`
