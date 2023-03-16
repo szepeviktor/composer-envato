@@ -51,10 +51,7 @@ class EnvatoPackage extends Package
             return $this->version;
         }
 
-        // Query Envato API
-        $this->prettyVersion = $this->api->getVersion($this->itemId);
-        $versionParser = new VersionParser();
-        $this->version = $versionParser->normalize($this->prettyVersion);
+        $this->processItemVersion();
 
         return $this->version;
     }
@@ -68,10 +65,7 @@ class EnvatoPackage extends Package
             return $this->prettyVersion;
         }
 
-        // Query Envato API
-        $this->prettyVersion = $this->api->getVersion($this->itemId);
-        $versionParser = new VersionParser();
-        $this->version = $versionParser->normalize($this->prettyVersion);
+        $this->processItemVersion();
 
         return $this->prettyVersion;
     }
@@ -93,7 +87,11 @@ class EnvatoPackage extends Package
             return $this->distUrl;
         }
 
-        $this->distUrl = $this->api->getDownloadUrl($this->itemId);
+        /**
+         * Use the Envato API URL to retrieve the item's download URL
+         * as the package's dist URL to serve as its cache key.
+         */
+        $this->distUrl = $this->api->getDownloadRequestUrl($this->itemId, $this->getPrettyVersion());
 
         return $this->distUrl;
     }
@@ -104,5 +102,16 @@ class EnvatoPackage extends Package
     public function isAbandoned()
     {
         return false;
+    }
+
+    /**
+     * Retrieve the item's version from the Envato API.
+     */
+    protected function processItemVersion(): void
+    {
+        // Query Envato API
+        $this->prettyVersion = $this->api->getVersion($this->itemId);
+        $versionParser = new VersionParser();
+        $this->version = $versionParser->normalize($this->prettyVersion);
     }
 }

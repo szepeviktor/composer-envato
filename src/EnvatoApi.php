@@ -30,6 +30,11 @@ class EnvatoApi
         $this->token = $token;
     }
 
+    /**
+     * Query the Envato API for the item's current version.
+     *
+     * @return non-empty-string
+     */
     public function getVersion(int $itemId): string
     {
         $response = $this->httpDownloader->get(
@@ -41,11 +46,14 @@ class EnvatoApi
         if ($response->getStatusCode() === 200) {
             $versionData = \json_decode($response->getBody() ?? '', true);
             // TODO Check JSON
-            if (is_array($versionData) && \array_key_exists('wordpress_theme_latest_version', $versionData)) {
-                return $versionData['wordpress_theme_latest_version'];
-            }
-            if (is_array($versionData) && \array_key_exists('wordpress_plugin_latest_version', $versionData)) {
-                return $versionData['wordpress_plugin_latest_version'];
+            if (\is_array($versionData)) {
+                if (\array_key_exists('wordpress_theme_latest_version', $versionData)) {
+                    return $versionData['wordpress_theme_latest_version'];
+                }
+
+                if (\array_key_exists('wordpress_plugin_latest_version', $versionData)) {
+                    return $versionData['wordpress_plugin_latest_version'];
+                }
             }
         }
 
@@ -54,12 +62,48 @@ class EnvatoApi
     }
 
     /**
+     * Return the Envato API URL to retrieve the item's download URL.
+     *
+     * @param  int         $itemId  The item ID to lookup.
+     * @param  string|null $version Optional version to append to the URL.
+     *     This is used to by the plugin for the download's cache key in Composer.
+     * @return non-empty-string
+     */
+    public function getDownloadRequestUrl(int $itemId, ?string $version = null): string
+    {
+        $query = ['item_id' => $itemId];
+
+        if ($version !== null) {
+            $query['version'] = $version;
+        }
+
+        return self::API_BASE_URL . '/market/buyer/download?' . \http_build_query($query);
+    }
+
+    /**
+     * Query the Envato API to retrieve the item's download URL.
+     *
+     * @param  int|string $itemIdOrApiUrl The item ID to lookup or the API URL to query.
      * @return non-empty-string|null
      */
-    public function getDownloadUrl(int $itemId): ?string
+    public function getDownloadUrl($itemIdOrApiUrl): ?string
     {
+        if (
+            \is_int($itemIdOrApiUrl) &&
+            $itemIdOrApiUrl > 0
+        ) {
+            $apiUrl = $this->getDownloadRequestUrl($itemIdOrApiUrl);
+        } elseif (
+            \is_string($itemIdOrApiUrl) &&
+            \strpos($itemIdOrApiUrl, self::API_BASE_URL . '/market/buyer/download') !== false
+        ) {
+            $apiUrl = $itemIdOrApiUrl;
+        } else {
+            return null;
+        }
+
         $response = $this->httpDownloader->get(
-            self::API_BASE_URL . '/market/buyer/download?' . \http_build_query(['item_id' => $itemId]),
+            $apiUrl,
             ['http' => ['header' => ['Authorization: Bearer ' . $this->token]]]
         );
 
@@ -67,11 +111,14 @@ class EnvatoApi
         if ($response->getStatusCode() === 200) {
             $urlData = \json_decode($response->getBody() ?? '', true);
             // TODO Check JSON
-            if (is_array($urlData) && \array_key_exists('wordpress_theme', $urlData)) {
-                return $urlData['wordpress_theme'];
-            }
-            if (is_array($urlData) && \array_key_exists('wordpress_plugin', $urlData)) {
-                return $urlData['wordpress_plugin'];
+            if (\is_array($urlData)) {
+                if (\array_key_exists('wordpress_theme', $urlData)) {
+                    return $urlData['wordpress_theme'];
+                }
+
+                if (\array_key_exists('wordpress_plugin', $urlData)) {
+                    return $urlData['wordpress_plugin'];
+                }
             }
         }
 
