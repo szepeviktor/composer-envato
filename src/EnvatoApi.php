@@ -110,7 +110,6 @@ class EnvatoApi
         // TODO HTTP 429 response. Included in this response is a HTTP header Retry-After
         if ($response->getStatusCode() === 200) {
             $urlData = \json_decode($response->getBody() ?? '', true);
-            // TODO Check JSON
             if (\is_array($urlData)) {
                 if (\array_key_exists('wordpress_theme', $urlData)) {
                     return $urlData['wordpress_theme'];
