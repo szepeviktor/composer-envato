@@ -83,8 +83,14 @@ class EnvatoConfig
 
     protected function mergeEnvConfig(): void
     {
-        if (\array_key_exists(self::ENV_VAR_TOKEN, $_ENV)) {
+        if (!empty($_ENV[self::ENV_VAR_TOKEN])) {
             $this->config['token'] = $_ENV[self::ENV_VAR_TOKEN];
+            return;
+        }
+
+        $token = \getenv(self::ENV_VAR_TOKEN);
+        if ($token !== false && $token !== '') {
+            $this->config['token'] = $token;
         }
     }
 }
