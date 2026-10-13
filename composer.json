@@ -6,6 +6,8 @@
         "envato",
         "themeforest",
         "codecanyon",
+        "themefusion",
+        "avada",
         "wordpress",
         "composer",
         "composer-plugin"
@@ -20,9 +22,6 @@
     "require-dev": {
         "composer/composer": "^2.3.0",
         "phpstan/phpstan": "^1.9"
-    },
-    "suggest": {
-        "szepeviktor/composer-theme-fusion": "Composer plugin for ThemeFusion"
     },
     "extra": {
         "class": "SzepeViktor\\Composer\\Envato\\EnvatoPlugin",

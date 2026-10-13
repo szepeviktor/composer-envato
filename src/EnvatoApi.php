@@ -6,6 +6,7 @@ namespace SzepeViktor\Composer\Envato;
 
 use Composer\Config;
 use Composer\Factory;
+use Composer\Downloader\TransportException;
 use Composer\IO\IOInterface;
 use Composer\Util\HttpDownloader;
 
@@ -23,6 +24,11 @@ class EnvatoApi
      * @var HttpDownloader
      */
     protected $httpDownloader;
+
+    /**
+     * @var array<int, string|null>
+     */
+    protected $purchaseCodes = [];
 
     public function __construct(IOInterface $io, Config $config, string $token)
     {
@@ -59,6 +65,41 @@ class EnvatoApi
 
         // In any other case
         return '0.0.0';
+    }
+
+    /**
+     * Query the Envato API for the purchase code of a bought item.
+     * Requires the "purchase:list" permission on the token.
+     */
+    public function getPurchaseCode(int $itemId): ?string
+    {
+        if (\array_key_exists($itemId, $this->purchaseCodes)) {
+            return $this->purchaseCodes[$itemId];
+        }
+
+        $this->purchaseCodes[$itemId] = null;
+
+        // ponytail: first page only (100 purchases), add paging when someone owns more themes than that
+        try {
+            $response = $this->httpDownloader->get(
+                self::API_BASE_URL . '/market/buyer/list-purchases?' . \http_build_query(['page_size' => 100]),
+                ['http' => ['header' => ['Authorization: Bearer ' . $this->token]]]
+            );
+        } catch (TransportException $exception) {
+            return null;
+        }
+
+        $purchaseData = \json_decode($response->getBody() ?? '', true);
+        if ($response->getStatusCode() === 200 && \is_array($purchaseData) && \is_array($purchaseData['results'] ?? null)) {
+            foreach ($purchaseData['results'] as $purchase) {
+                if ((int)($purchase['item']['id'] ?? 0) === $itemId && \is_string($purchase['code'] ?? null)) {
+                    $this->purchaseCodes[$itemId] = $purchase['code'];
+                    break;
+                }
+            }
+        }
+
+        return $this->purchaseCodes[$itemId];
     }
 
     /**

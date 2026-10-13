@@ -14,7 +14,12 @@ class EnvatoConfig
     public const ENV_VAR_TOKEN = 'ENVATO_TOKEN';
 
     /**
-     * @var array{token?:string, packages?:array{item-id:int|string|null, type:string|null}}
+     * Domain the theme is registered on at ThemeFusion, falls back to Bedrock's WP_HOME.
+     */
+    public const ENV_VAR_THEME_FUSION_DOMAIN = 'THEME_FUSION_DOMAIN';
+
+    /**
+     * @var array{token?:string, packages?:array{item-id:int|string|null, type:string|null, theme-fusion?:bool}}
      */
     protected $config;
 
@@ -56,7 +61,7 @@ class EnvatoConfig
     /**
      * Return details of all packages.
      *
-     * @return array<int, array{name:string, itemId:int, type:string}>
+     * @return array<int, array{name:string, itemId:int, type:string, themeFusion:bool}>
      */
     public function getPackageList(): array
     {
@@ -66,6 +71,7 @@ class EnvatoConfig
                     'name'   => (string)$name,
                     'itemId' => (int)($data['item-id'] ?? 0),
                     'type'   => (string)($data['type'] ?? 'wordpress-theme'),
+                    'themeFusion' => (bool)($data['theme-fusion'] ?? false),
                 ];
             },
             \array_keys($this->config['packages']),
@@ -81,16 +87,30 @@ class EnvatoConfig
         }
     }
 
+    public function getThemeFusionDomain(): ?string
+    {
+        return self::env(self::ENV_VAR_THEME_FUSION_DOMAIN) ?? self::env('WP_HOME');
+    }
+
     protected function mergeEnvConfig(): void
     {
-        if (!empty($_ENV[self::ENV_VAR_TOKEN])) {
-            $this->config['token'] = $_ENV[self::ENV_VAR_TOKEN];
-            return;
-        }
-
-        $token = \getenv(self::ENV_VAR_TOKEN);
-        if ($token !== false && $token !== '') {
+        $token = self::env(self::ENV_VAR_TOKEN);
+        if ($token !== null) {
             $this->config['token'] = $token;
         }
+    }
+
+    /**
+     * Read a variable from .env or the OS environment.
+     */
+    protected static function env(string $name): ?string
+    {
+        if (!empty($_ENV[$name]) && \is_string($_ENV[$name])) {
+            return $_ENV[$name];
+        }
+
+        $value = \getenv($name);
+
+        return $value !== false && $value !== '' ? $value : null;
     }
 }
